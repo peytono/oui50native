@@ -9,6 +9,7 @@ function WellnessDirectory(props) {
             <ListItem 
                 title={item.title}
                 subtitle={item.author}
+                onPress={() => props.onPress(item.id)}
                 leftAvatar={{ source: require('./images/protectYourPeace.jpeg')}}
             />
         );

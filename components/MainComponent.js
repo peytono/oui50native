@@ -1,32 +1,36 @@
 import React, { Component } from 'react';
 import WellnessDirectory from './WellnessDirectoryComponent';
 import ArticleInfo from './ArticleInfoComponent';
-import { View } from 'react-native';
-import { ARTICLES } from '../shared/articles.js';
+import { View, Platform } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+
+const WellnessDirectoryNavigator = createStackNavigator(
+    {
+        WellnessDirectory: { screen: WellnessDirectory },
+        ArticleInfo: { screen: ArticleInfo }
+    },
+    {
+        initialRouteName: 'WellnessDirectory',
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: '#10DDF6'
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+                color: '#fff'
+            }
+        }
+    }
+);
 
 class Main extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            articles: ARTICLES,
-            selectedArticle: null
-        };
-    }
-
-    onArticleSelect(articleId) {
-        this.setState({selectedArticle: articleId})
-    }
-
     render() {
         return (
-            <View style={{flex: 1}}>
-                <WellnessDirectory 
-                    articles={this.state.articles} 
-                    onPress={articleId => this.onArticleSelect(articleId)} 
-                />
-                <ArticleInfo article={this.state.articles.filter(article => article.id === this.state.selectedArticle)[0]} />
+            <View style={{flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight }}>
+                <WellnessDirectoryNavigator />
             </View>
-    )}
+        );
+    }
 }
 
 export default Main;

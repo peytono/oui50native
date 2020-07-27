@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import { ARTICLES } from '../shared/articles';
 
-function WellnessDirectory(props) {
+class WellnessDirectory extends Component {
 
-    const renderDirectoryItem = ({item}) => {
-        return (
-            <ListItem 
-                title={item.title}
-                subtitle={item.author}
-                onPress={() => props.onPress(item.id)}
-                leftAvatar={{ source: require('./images/protectYourPeace.jpeg')}}
-            />
-        );
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            articles: ARTICLES
+        };
+    }
+
+    static navigationOptions = {
+        title: 'Wellness Articles'
     };
 
-    return (
-        <FlatList
-            data={props.articles}
-            renderItem={renderDirectoryItem}
-            keyExtractor={item => item.id.toString()}
-        />
-    );
+    render() {
+        const { navigate } = this.props.navigation;
+        const renderDirectoryItem = ({item}) => {
+            return (
+                <ListItem 
+                    title={item.title}
+                    subtitle={item.author}
+                    onPress={() => navigate('ArticleInfo', { articleId: item.id })}
+                    leftAvatar={{ source: require('./images/protectYourPeace.jpeg')}}
+                />
+            );
+        };
+
+        return (
+            <FlatList
+                data={this.state.articles}
+                renderItem={renderDirectoryItem}
+                keyExtractor={item => item.id.toString()}
+            />
+        );
+    }
 }
 
 export default WellnessDirectory;

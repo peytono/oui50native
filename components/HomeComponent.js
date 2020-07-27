@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
 import { ARTICLES } from '../shared/articles'
 
 function RenderItem({item}) {
+
     if (item) {
         return ( 
-            <Card
-                featuredTitle={item.title}
-                image={require('./images/italy.jpeg')}>
-                <Text
-                    style={{margin: 10}}>
-                    {item.author}
-                </Text>
-            </Card>
+                <Card
+                    featuredTitle={item.title}
+                    image={require('./images/italy.jpeg')}
+                >
+                    <Text
+                        style={{margin: 10}}>
+                        {item.author}
+                    </Text>
+                </Card>
         );
     }
     return <View />;
+
 }
 
 class Home extends Component {
@@ -34,6 +37,7 @@ class Home extends Component {
     }
 
     render() {
+        const { navigate } = this.props.navigation;
         return (
             <ScrollView>
                 <Card
@@ -46,8 +50,12 @@ class Home extends Component {
                 <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}} >
                     <Text style={{fontSize: 16, marginTop: 10, fontWeight: "bold"}}>Featured Article</Text>
                 </View>
-                <RenderItem 
-                    item={this.state.articles.filter(article => article.featured)[0]} />
+                <TouchableOpacity
+                    onPress={ () => navigate('ArticleInfo')}
+                    >
+                    <RenderItem 
+                        item={this.state.articles.filter(article => article.featured)[0]} />
+                </TouchableOpacity>
             </ScrollView>
         );
     }

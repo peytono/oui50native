@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Text, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Card, Icon } from 'react-native-elements';
 import { ARTICLES } from '../shared/articles';
 
-function RenderArticle({article}) {
+function RenderArticle(props) {
+
+    const {article} = props;
+
     if (article) {
         return (
             <ScrollView>
@@ -15,6 +18,15 @@ function RenderArticle({article}) {
                     <Text style={{margin: 10}}>
                         {article.contents}
                     </Text>
+                    <Icon
+                        name={props.favorite ? 'heart' : 'heart-o'}
+                        type='font-awesome'
+                        color='#C48189' 
+                        raised
+                        reverse
+                        onPress={() => props.favorite ? 
+                            console.log('Already set as a favorite') : props.markFavorite()}
+                    />
                 </Card>
             </ScrollView>
         );
@@ -28,8 +40,13 @@ class ArticleInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            articles: ARTICLES
+            articles: ARTICLES,
+            favorite: false
         };
+    }
+
+    markFavorite() {
+        this.setState({favorite: true});
     }
 
     static navigationOptions = {
@@ -41,7 +58,10 @@ class ArticleInfo extends Component {
         const article = this.state.articles.filter(article => article.id === articleId)[0];
         return (
             <ScrollView>
-                <RenderArticle article={article} />
+                <RenderArticle article={article}
+                    favorite={this.state.favorite}
+                    markFavorite={() => this.markFavorite()}
+                />
             </ScrollView>
         );
     }

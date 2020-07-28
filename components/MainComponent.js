@@ -2,12 +2,24 @@ import React, { Component } from 'react';
 import Home from './HomeComponent';
 import WellnessDirectory from './WellnessDirectoryComponent';
 import ArticleInfo from './ArticleInfoComponent';
-import { View, Platform } from 'react-native';
-import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
+import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-native';
+import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
+import { Icon } from 'react-native-elements';
+import SafeAreaView from 'react-native-safe-area-view';
 
 const WellnessDirectoryNavigator = createStackNavigator(
     {
-        WellnessDirectory: { screen: WellnessDirectory },
+        WellnessDirectory: { 
+            screen: WellnessDirectory,
+            navigationOptions: ({navigation}) => ({
+                headerLeft: <Icon
+                    name='list'
+                    type='font-awesome'
+                    iconStyle={styles.stackIcon}
+                    onPress={() => navigation.toggleDrawer()}
+                />
+            }) 
+        },
         ArticleInfo: { screen: ArticleInfo }
     },
     {
@@ -29,25 +41,79 @@ const HomeNavigator = createStackNavigator(
         Home: { screen: Home }
     },
     {
-        navigationOptions: {
+        navigationOptions: ({navigation}) => ({
             headerStyle: {
                 backgroundColor: '#2B547E'
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
                 color: '#fff'
-            }
-        }
+            },
+            headerLeft: <Icon
+                name='home'
+                type='font-awesome'
+                iconStyle={styles.stackIcon}
+                onPress={() => navigation.toggleDrawer()}
+            />
+        })
     }
+);
+
+const CustomDrawerContentComponent = props => (
+    <ScrollView>
+        <SafeAreaView
+            style={styles.container}
+            forceInset={{horizontal: 'never'}}>
+            <View >
+                <Image 
+                    source={require('./images/cropped-50ui.png')} 
+                    style={styles.drawerImage} 
+                />
+                <Text style={styles.drawerPhraseText}>What's your extraordinary?</Text>
+            </View>
+            <DrawerItems {...props} />
+            
+        </SafeAreaView>
+        <SafeAreaView
+            style={styles.container}
+            forceInset={{bottom: 'always'}}>
+            
+        </SafeAreaView>
+    </ScrollView>
 );
 
 const MainNavigator = createDrawerNavigator(
     {
-        Home: { screen: HomeNavigator },
-        Directory: { screen: WellnessDirectoryNavigator }
+        Home: { 
+            screen: HomeNavigator,
+            navigationOptions: {
+                drawerIcon: ({tintColor}) => (
+                    <Icon 
+                        name='home'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            } 
+        },
+        Directory: { 
+            screen: WellnessDirectoryNavigator,
+            navigationOptions: {
+                drawerIcon: ({tintColor}) => (
+                    <Icon
+                        name='list'
+                        type='font-awesome'
+                        size={24}
+                        color={tintColor}
+                    />
+                )
+            } 
+        }
     },
     {
         drawerBackgroundColor: '#C48189',
+        contentComponent: CustomDrawerContentComponent,
         contentOptions: {
             activeTintColor: '#2B547E',
             inactiveTintColor: '#696969'
@@ -66,5 +132,38 @@ class Main extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    drawerHeader: {
+        backgroundColor: '#C48189',
+        height: 140,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        flexDirection: 'row'
+    },
+    drawerPhraseText: {
+        color: 'black',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fontStyle: 'italic',
+        marginLeft: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    drawerImage: {
+        margin: 10,
+        width: 150,
+        height: 87.5
+    },
+    stackIcon: {
+        marginLeft: 10,
+        color: '#fff',
+        fontSize: 24
+    }
+});
 
 export default Main;

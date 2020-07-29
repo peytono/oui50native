@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Home from './HomeComponent';
-import WellnessDirectory from './WellnessDirectoryComponent';
+import Directory from './DirectoryComponent';
 import ArticleInfo from './ArticleInfoComponent';
 import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-native';
 import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
@@ -13,10 +13,10 @@ const mapDispatchToProps = {
     fetchArticles
 };
 
-const WellnessDirectoryNavigator = createStackNavigator(
+const DirectoryNavigator = createStackNavigator(
     {
-        WellnessDirectory: { 
-            screen: WellnessDirectory,
+        Directory: { 
+            screen: Directory,
             navigationOptions: ({navigation}) => ({
                 headerLeft: <Icon
                     name='list'
@@ -29,7 +29,7 @@ const WellnessDirectoryNavigator = createStackNavigator(
         ArticleInfo: { screen: ArticleInfo }
     },
     {
-        initialRouteName: 'WellnessDirectory',
+        initialRouteName: 'Directory',
         navigationOptions: {
             headerStyle: {
                 backgroundColor: '#2B547E'
@@ -104,7 +104,7 @@ const MainNavigator = createDrawerNavigator(
             } 
         },
         Directory: { 
-            screen: WellnessDirectoryNavigator,
+            screen: DirectoryNavigator,
             navigationOptions: {
                 drawerIcon: ({tintColor}) => (
                     <Icon

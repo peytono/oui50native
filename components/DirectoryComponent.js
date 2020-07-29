@@ -11,7 +11,7 @@ const mapStateToProps = state => {
     };
 };
 
-class WellnessDirectory extends Component {
+class Directory extends Component {
 
     constructor(props) {
         super(props);
@@ -22,7 +22,7 @@ class WellnessDirectory extends Component {
     }
 
     static navigationOptions = {
-        title: 'Wellness Articles'
+        title: 'Articles'
     };
 
     render() {
@@ -49,4 +49,4 @@ class WellnessDirectory extends Component {
     }
 }
 
-export default connect(mapStateToProps)(WellnessDirectory);
+export default connect(mapStateToProps)(Directory);

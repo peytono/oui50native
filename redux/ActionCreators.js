@@ -30,7 +30,7 @@ export const articlesLoading = () => ({
 
 export const articlesFailed = errMess => ({
     type: ActionTypes.ARTICLES_FAILED,
-    payload: articles
+    payload: errMess
 });
 
 export const addArticles = articles => ({

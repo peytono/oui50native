@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
-import { ARTICLES } from '../shared/articles'
+import { ARTICLES } from '../shared/articles';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        articles: state.articles
+    };
+};
 
 function RenderItem({item}) {
 
@@ -9,7 +17,7 @@ function RenderItem({item}) {
         return ( 
                 <Card
                     featuredTitle={item.title}
-                    image={require('./images/italy.jpeg')}
+                    image={{uri: baseUrl + item.image}}
                 >
                     <Text
                         style={{margin: 10}}>
@@ -54,11 +62,11 @@ class Home extends Component {
                     onPress={ () => navigate('ArticleInfo')}
                     >
                     <RenderItem 
-                        item={this.state.articles.filter(article => article.featured)[0]} />
+                        item={this.props.articles.articles.filter(article => article.featured)[0]} />
                 </TouchableOpacity>
             </ScrollView>
         );
     }
 }
 
-export default Home;
+export default connect(mapStateToProps)(Home);

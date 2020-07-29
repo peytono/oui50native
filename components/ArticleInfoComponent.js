@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, FlatList } from 'react-native';
 import { Card, Icon } from 'react-native-elements';
 import { ARTICLES } from '../shared/articles';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        articles: state.articles
+    };
+};
 
 function RenderArticle(props) {
 
@@ -12,7 +20,7 @@ function RenderArticle(props) {
             <ScrollView>
                 <Card
                     featuredTitle={article.title}
-                    image={require('./images/theJump.jpg')}
+                    image={{uri: baseUrl + article.image}}
                     featuredSubtitle={article.author}>
                     
                     <Text style={{margin: 10}}>
@@ -55,7 +63,7 @@ class ArticleInfo extends Component {
     
     render() {
         const articleId = this.props.navigation.getParam('articleId');
-        const article = this.state.articles.filter(article => article.id === articleId)[0];
+        const article = this.props.articles.articles.filter(article => article.id === articleId)[0];
         return (
             <ScrollView>
                 <RenderArticle article={article}
@@ -67,4 +75,4 @@ class ArticleInfo extends Component {
     }
 }
 
-export default ArticleInfo;
+export default connect(mapStateToProps)(ArticleInfo);

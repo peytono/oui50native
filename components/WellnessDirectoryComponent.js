@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Tile } from 'react-native-elements';
 import { ARTICLES } from '../shared/articles';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        articles: state.articles
+    };
+};
 
 class WellnessDirectory extends Component {
 
@@ -21,18 +29,19 @@ class WellnessDirectory extends Component {
         const { navigate } = this.props.navigation;
         const renderDirectoryItem = ({item}) => {
             return (
-                <ListItem 
+                <Tile 
                     title={item.title}
-                    subtitle={item.author}
+                    caption={item.author}
+                    featured
                     onPress={() => navigate('ArticleInfo', { articleId: item.id })}
-                    leftAvatar={{ source: require('./images/protectYourPeace.jpeg')}}
+                    imageSrc={{uri: baseUrl + item.image}}
                 />
             );
         };
 
         return (
             <FlatList
-                data={this.state.articles}
+                data={this.props.articles.articles}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
             />
@@ -40,4 +49,4 @@ class WellnessDirectory extends Component {
     }
 }
 
-export default WellnessDirectory;
+export default connect(mapStateToProps)(WellnessDirectory);

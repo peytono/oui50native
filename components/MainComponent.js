@@ -6,6 +6,12 @@ import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-nativ
 import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
+import { connect } from 'react-redux';
+import { fetchArticles } from '../redux/ActionCreators';
+
+const mapDispatchToProps = {
+    fetchArticles
+};
 
 const WellnessDirectoryNavigator = createStackNavigator(
     {
@@ -122,6 +128,11 @@ const MainNavigator = createDrawerNavigator(
 );
 
 class Main extends Component {
+
+    componentDidMount() {
+        this.props.fetchArticles();
+    }
+
     render() {
         return (
             <View style={{
@@ -166,4 +177,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);

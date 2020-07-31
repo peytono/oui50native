@@ -1,12 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { articles } from './articles';
+import { favorites } from './favorites';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { articles } from './articles';
 
 export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
-            articles
+            articles,
+            favorites
         }),
         applyMiddleware(thunk, logger)
     );

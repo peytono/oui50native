@@ -4,11 +4,17 @@ import { Card, Icon } from 'react-native-elements';
 import { ARTICLES } from '../shared/articles';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import { postFavorite } from '../redux/ActionCreators';
 
 const mapStateToProps = state => {
     return {
-        articles: state.articles
+        articles: state.articles,
+        favorites: state.favorites
     };
+};
+
+const mapDispatchToProps = {
+    postFavorite: articleId => (postFavorite(articleId))
 };
 
 function RenderArticle(props) {
@@ -53,8 +59,8 @@ class ArticleInfo extends Component {
         };
     }
 
-    markFavorite() {
-        this.setState({favorite: true});
+    markFavorite(articleId) {
+        this.props.postFavorite(articleId);
     }
 
     static navigationOptions = {
@@ -67,12 +73,12 @@ class ArticleInfo extends Component {
         return (
             <ScrollView>
                 <RenderArticle article={article}
-                    favorite={this.state.favorite}
-                    markFavorite={() => this.markFavorite()}
+                    favorite={this.props.favorites.includes(articleId)}
+                    markFavorite={() => this.markFavorite(articleId)}
                 />
             </ScrollView>
         );
     }
 }
 
-export default connect(mapStateToProps)(ArticleInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleInfo);

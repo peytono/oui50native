@@ -37,3 +37,19 @@ export const addArticles = articles => ({
     type: ActionTypes.ADD_ARTICLES,
     payload: articles
 });
+
+export const postFavorite = articleId => dispatch => {
+    setTimeout(() => {
+        dispatch(addFavorite(articleId));
+    }, 1000);
+};
+
+export const addFavorite = articleId => ({
+    type: ActionTypes.ADD_FAVORITE,
+    payload: articleId
+});
+
+export const deleteFavorite = articleId => ({
+    type: ActionTypes.DELETE_FAVORITE,
+    payload: articleId
+});

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-elements';
+import Loading from './LoadingComponent';
 import { ARTICLES } from '../shared/articles';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
@@ -11,8 +12,19 @@ const mapStateToProps = state => {
     };
 };
 
-function RenderItem({item}) {
+function RenderItem(props) {
+    const {item} = props;
 
+    if (props.isLoading) {
+        return <Loading />;
+    }
+    if (props.errMess) {
+        return (
+            <View>
+                <Text>{props.errMess}</Text>
+            </View>
+        );
+    }
     if (item) {
         return ( 
                 <Card
@@ -46,6 +58,8 @@ class Home extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
+        console.log(navigate);
+        
         return (
             <ScrollView>
                 <Card
@@ -62,7 +76,10 @@ class Home extends Component {
                     onPress={ () => navigate('ArticleInfo')}
                     >
                     <RenderItem 
-                        item={this.props.articles.articles.filter(article => article.featured)[0]} />
+                        item={this.props.articles.articles.filter(article => article.featured)[0]}
+                        isLoading={this.props.articles.isLoading}
+                        errMess={this.props.articles.errMess}    
+                    />
                 </TouchableOpacity>
             </ScrollView>
         );
